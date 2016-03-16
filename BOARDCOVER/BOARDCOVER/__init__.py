@@ -1,7 +1,7 @@
-# int_boardCOVER2
+# BOARDCOVER
 # Jaekyoung Kim (rlakim5521@naver.com)
 
-global cache
+# NOT COMPLETE
 
 class BitMatrix:
     def __init__(self, matrix, row_size, col_size):
@@ -82,42 +82,6 @@ class BitMatrix:
     # complete
     def overlap(self, overlapping):
         return BitMatrix(self.matrix | overlapping.matrix, self.row_size, self.col_size)
-
-# MAX_INDEX = pow(2, 50)
-# MASK = MAX_INDEX - 1
-
-def getMaxNumber(board, blocks, start_point, R, C):
-    number = [0]
-    for iter in xrange(start_point, (board.row_size - R)*board.col_size + (board.col_size - C + 1)):
-        if(board.read(1, iter/board.col_size, iter%board.col_size)!=0):
-            continue
-        if(iter % board.col_size > (board.col_size - C)):
-            continue
-        if(not board.is_overlap(BitMatrix(blocks[0].matrix << iter,H,W))):
-            nextMatrix = board.matrix | (blocks[0].matrix << iter)
-            # if(cache[nextMatrix >> 50][nextMatrix & MASK] == -1):
-            number.append(getMaxNumber(BitMatrix(nextMatrix, H, W), blocks, start_point + 1, R, C)+1)
-        if(not board.is_overlap(BitMatrix(blocks[2].matrix << iter,H,W))):
-            nextMatrix = board.matrix | (blocks[2].matrix << iter)
-            # if(cache[nextMatrix >> 50][nextMatrix & MASK] == -1):
-            number.append(getMaxNumber(BitMatrix(nextMatrix, H, W), blocks, start_point + 1, R, C)+1)
-    
-    for iter in xrange(start_point, (board.row_size - C)*board.col_size + (board.col_size - R + 1)):
-        if(board.read(1, iter/board.col_size, iter%board.col_size)!=0):
-            continue
-        if(iter % board.col_size > (board.col_size - C)):
-            continue
-        if(not board.is_overlap(BitMatrix(blocks[1].matrix << iter,H,W))):
-            nextMatrix = board.matrix | (blocks[1].matrix << iter)
-            # if(cache[nextMatrix >> 50][nextMatrix & MASK] == -1):
-            number.append(getMaxNumber(BitMatrix(nextMatrix, H, W), blocks, start_point + 1, R, C)+1)
-        if(not board.is_overlap(BitMatrix(blocks[3].matrix << iter,H,W))):
-            nextMatrix = board.matrix | (blocks[3].matrix << iter)
-            # if(cache[nextMatrix >> 50][nextMatrix & MASK] == -1):
-            number.append(getMaxNumber(BitMatrix(nextMatrix, H, W), blocks, start_point + 1, R, C)+1)
-    
-    # cache[board.matrix >> 50][board.matrix & MASK] = max(number)
-    return max(number)
 
 # Main function
 if __name__ == "__main__":
