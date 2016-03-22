@@ -1,13 +1,6 @@
 # RATIO
 # Jaekyoung Kim (rlakim5521@naver.com)
 
-
-def getMinGame(N, M, baseWinningRate):
-    if((M * 100) / N > baseWinningRate):
-        return M
-    else:
-        return getMinGame(N + 1, M + 1, baseWinningRate)
-
 # Main function
 if __name__ == "__main__":
     for _ in range(int(raw_input())):
