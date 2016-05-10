@@ -1,0 +1,10 @@
+// Created by rbtree.write_dot()
+digraph red_black_tree {
+  N139623020643984 [label="72 50", color="black"];
+  N139623020644048 [label="57 67", color="black"];
+  N139623020644176 [label="64 60", color="red"];
+  N139623020644048 -> N139623020644176 ;
+  N139623020643984 -> N139623020644048 ;
+  N139623020644112 [label="74 55", color="black"];
+  N139623020643984 -> N139623020644112 ;
+}
