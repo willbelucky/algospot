@@ -60,44 +60,6 @@ class rbtree(object):
     def size(self):
         return self._size
     
-    def search(self, problem, x=None):
-        """
-        Search the subtree rooted at x (or the root if not given) iteratively for the key.
-        
-        @return: self.nil if it cannot find it.
-        """
-        if None == x:
-            x = self.root
-        while x != self.nil and problem != x.problem:
-            if problem < x.problem:
-                x = x.left
-            else:
-                x = x.right
-        return x
-
-    
-    def minimum(self, x=None):
-        """
-        @return: The minimum value in the subtree rooted at x.
-        """
-        if None == x:
-            x = self.root
-        while x.left != self.nil:
-            x = x.left
-        return x
-
-    
-    def maximum(self, x=None):
-        """
-        @return: The maximum value in the subtree rooted at x.
-        """
-        if None == x:
-            x = self.root
-        while x.right != self.nil:
-            x = x.right
-        return x
-
-    
     def insert_key(self, problem, ramen):
         "Insert the key into the tree."
         self.insert_node(self._create_node(problem=problem, ramen=ramen))
@@ -109,26 +71,26 @@ class rbtree(object):
         x = self._root
         while x != self._nil:
             y = x
-            if z.problem > x.problem and z.ramen > x.ramen:
+            if z._problem > x._problem and z._ramen > x._ramen:
                 # x is not a nerd. So, delete x and try inserting z again.
                 self.delete_node(x)
                 self.insert_node(z)
                 return
-            elif z.problem <= x.problem and z.ramen >= x.ramen:
-                x = x.left
-            elif z.problem >= x.problem and z.ramen <= x.ramen:
-                x = x.right
+            elif z._problem <= x._problem and z._ramen >= x._ramen:
+                x = x._left
+            elif z._problem >= x._problem and z._ramen <= x._ramen:
+                x = x._right
             else:
-                pass
+                return
         z._p = y
-        if y == self.nil:
+        if y == self._nil:
             self._root = z
-        elif z.problem < y.problem:
+        elif z._problem < y._problem:
             y._left = z
         else:
             y._right = z
-        z._left = self.nil
-        z._right = self.nil
+        z._left = self._nil
+        z._right = self._nil
         z._red = True
         self._insert_fixup(z)
         self._size = self._size + 1
@@ -171,7 +133,7 @@ class rbtree(object):
             else:
                 z._p._right = y
         else:
-            if not y.red and x != None:
+            if not y._red and x != None:
                 self.delete_fixup(x)
         
         if self._root == z:
@@ -191,7 +153,7 @@ class rbtree(object):
                     x._p._red = True
                     self._left_rotate(x.p)
                     w = x._p._right
-                if not w._right._red and not w.left.red:
+                if not w._right._red and not w._left._red:
                     w._red = True
                     x = x._p
                 else:
@@ -248,67 +210,67 @@ class rbtree(object):
     
     def _insert_fixup(self, z):
         "Restore red-black properties after insert."
-        while z.p.red:
-            if z.p == z.p.p.left:
-                y = z.p.p.right
-                if y.red:
-                    z.p._red = False
+        while z._p._red:
+            if z._p == z._p._p._left:
+                y = z._p._p._right
+                if y._red:
+                    z._p._red = False
                     y._red = False
-                    z.p.p._red = True
-                    z = z.p.p
+                    z._p._p._red = True
+                    z = z._p._p
                 else:
-                    if z == z.p.right:
-                        z = z.p
+                    if z == z._p._right:
+                        z = z._p
                         self._left_rotate(z)
-                    z.p._red = False
-                    z.p.p._red = True
-                    self._right_rotate(z.p.p)
+                    z._p._red = False
+                    z._p._p._red = True
+                    self._right_rotate(z._p._p)
             else:
-                y = z.p.p.left
-                if y.red:
-                    z.p._red = False
+                y = z._p._p._left
+                if y._red:
+                    z._p._red = False
                     y._red = False
-                    z.p.p._red = True
-                    z = z.p.p
+                    z._p._p._red = True
+                    z = z._p._p
                 else:
-                    if z == z.p.left:
-                        z = z.p
+                    if z == z._p._left:
+                        z = z._p
                         self._right_rotate(z)
-                    z.p._red = False
-                    z.p.p._red = True
+                    z._p._red = False
+                    z._p._p._red = True
                     self._left_rotate(z.p.p)
         self.root._red = False
     
     def _left_rotate(self, x):
         "Left rotate x."
-        y = x.right
-        x._right = y.left
-        if y.left != self.nil:
-            y.left._p = x
-        y._p = x.p
-        if x.p == self.nil:
+        y = x._right
+        x._right = y._left
+        if y._left != self._nil:
+            y._left._p = x
+        y._p = x._p
+        if x._p == self._nil:
             self._root = y
-        elif x == x.p.left:
-            x.p._left = y
+        elif x == x._p._left:
+            x._p._left = y
         else:
-            x.p._right = y
+            x._p._right = y
         y._left = x
         x._p = y
 
 
     def _right_rotate(self, y):
         "Left rotate y."
-        x = y.left
-        y._left = x.right
-        if x.right != self.nil:
-            x.right._p = y
-        x._p = y.p
-        if y.p == self.nil:
+        x = y._left
+        y._left = x._right
+        if x._right != self._nil:
+            x._right._p = y
+        x._p = y._p
+        if y._p == self._nil:
             self._root = x
-        elif y == y.p.right:
-            y.p._right = x
+        elif y == y._p._right:
+            y._p._right = x
         else:
-            y.p._left = x
+            y._p._left = x
         x._right = y
         y._p = x
 
@@ -319,32 +281,32 @@ class rbtree(object):
         def is_red_black_node(node):
             "@return: num_black"
             # check has _left and _right or neither
-            if (node.left and not node.right) or (node.right and not node.left):
+            if (node._left and not node._right) or (node._right and not node._left):
                 return 0, False
 
             # check leaves are black
-            if not node.left and not node.right and node.red:
+            if not node._left and not node._right and node._red:
                 return 0, False
 
             # if node is red, check children are black
-            if node.red and node.left and node.right:
-                if node.left.red or node.right.red:
+            if node._red and node._left and node._right:
+                if node._left._red or node._right._red:
                     return 0, False
                     
             # descend tree and check black counts are balanced
-            if node.left and node.right:
+            if node._left and node._right:
                 
                 # check children's parents are correct
-                if self.nil != node.left and node != node.left.p:
+                if self._nil != node._left and node != node._left._p:
                     return 0, False
-                if self.nil != node.right and node != node.right.p:
+                if self._nil != node._right and node != node._right._p:
                     return 0, False
 
                 # check children are ok
-                left_counts, left_ok = is_red_black_node(node.left)
+                left_counts, left_ok = is_red_black_node(node._left)
                 if not left_ok:
                     return 0, False
-                right_counts, right_ok = is_red_black_node(node.right)
+                right_counts, right_ok = is_red_black_node(node._right)
                 if not right_ok:
                     return 0, False
 
@@ -355,7 +317,7 @@ class rbtree(object):
             else:
                 return 0, True
                 
-        num_black, is_ok = is_red_black_node(self.root)
+        num_black, is_ok = is_red_black_node(self._root)
         return is_ok and not self.root._red
     
 # Main function
