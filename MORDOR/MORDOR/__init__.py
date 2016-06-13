@@ -1,14 +1,17 @@
 # MORDOR
 # Jaekyoung Kim (rlakim5521@naver.com)
 
+import gc
+
 INT_MAX = 20001
 INT_MIN = -1
 
 class minRMQ:
     def __init__(self, array):
         self.n = len(array)
-        self.rangeMin = [0 for _ in xrange(4*self.n)]
+        self.rangeMin = [0] * (4*self.n)
         self._init(array, 0, self.n-1, 1)
+        gc.collect()
         
     def _init(self, array, left, right, node):
         if(left == right):
@@ -34,8 +37,9 @@ class minRMQ:
 class maxRMQ:
     def __init__(self, array):
         self.n = len(array)
-        self.rangeMax = [0 for _ in xrange(4*self.n)]
+        self.rangeMax = [0] * (4*self.n)
         self._init(array, 0, self.n-1, 1)
+        gc.collect()
         
     def _init(self, array, left, right, node):
         if(left == right):
